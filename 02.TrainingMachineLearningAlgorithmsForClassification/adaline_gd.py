@@ -3,6 +3,7 @@ import numpy as np
 
 class AdalineGD(object):
     """ADAptive LInear NEuron classifier.
+    With Batch Gradient Descent.
 
     Parameters
     -----------
@@ -62,5 +63,5 @@ class AdalineGD(object):
         return self.net_input(X)
 
     def predict(self, X):
-        """Return c;ass label after unit step"""
+        """Return class label after unit step"""
         return np.where(self.activation(X) >= 0.0, 1, -1)
