@@ -1,11 +1,11 @@
-# Kernel PCA
+# Updated Kernel PCA
 from scipy.spatial.distance import pdist, squareform
 from scipy import exp
 from scipy.linalg import eigh
 import numpy as np
 
 
-def rbf_kernel_pca(X, gamma, n_components):
+def rbf_kernel_pca2(X, gamma, n_components):
     """
     RBF kernel PCA implementation.
 
@@ -21,8 +21,12 @@ def rbf_kernel_pca(X, gamma, n_components):
 
     Returns
     -------
-    X_pc: {NumPy ndarray}, shape = [n_samples, k_features]
+    alphas: {NumPy ndarray}, shape = [n_samples, k_features]
         Projected dataset
+
+    lambdas: list
+        Eigenvalues
+
     """
     # Calculate pairwise squared Euclidean distances
     # in the MxN dimensional dataset.
@@ -44,6 +48,10 @@ def rbf_kernel_pca(X, gamma, n_components):
     eigvals, eigvecs = eigh(K)
 
     # Collect the top k eigenvectors (projected samples)
-    X_pc = np.column_stack((eigvecs[:, -i]
-                            for i in range(1, n_components + 1)))
-    return X_pc
+    alphas = np.column_stack((eigvecs[:, -i]
+                              for i in range(1, n_components + 1)))
+
+    # Collect the corresponding eigenvalues
+    lambdas = [eigvals[-i] for i in range(1, n_components + 1)]
+
+    return alphas, lambdas
