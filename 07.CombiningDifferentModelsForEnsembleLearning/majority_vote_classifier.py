@@ -4,7 +4,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.externals import six
 from sklearn.base import clone
 from sklearn.pipeline import _name_estimators
-import numpy as numpy
+import numpy as np
 #import operator
 
 
@@ -51,7 +51,7 @@ class MajorityVoteClassifier(BaseEstimator,
         -------
         self : object
         """
-        # Use LabelEncoder to ensure clsas labels start with 0, which is
+        # Use LabelEncoder to ensure class labels start with 0, which is
         # important for np.argmax
         # call in self.predict
         self.lablenc_ = LabelEncoder()
@@ -90,7 +90,7 @@ class MajorityVoteClassifier(BaseEstimator,
                 np.argmax(np.bincount(x, weights=self.weights)),
                 axis=1,
                 arr=predictions)
-            maj_vote = self.lablenc_.inverse_tranform(maj_vote)
+            maj_vote = self.lablenc_.inverse_transform(maj_vote)
             return maj_vote
 
     def predict_proba(self, X):
@@ -111,7 +111,7 @@ class MajorityVoteClassifier(BaseEstimator,
 
         """
         probas = np.asarray([clf.predict_proba(X)
-                             for clf in self.clsasifiers_])
+                             for clf in self.classifiers_])
         avg_proba = np.average(probas, axis=0, weights=self.weights)
         return avg_proba
 
